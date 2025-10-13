@@ -2,7 +2,7 @@ from strands import Agent
 from strands_tools import handoff_to_user
 
 # Import custom packages
-from src.config import OPENAI_MODEL
+from src.config import BEDROCK_MODEL
 from src.utils import load_system_prompt
 from src.Translation import Translation
 
@@ -13,7 +13,7 @@ class Translator(Agent):
     
     def __init__(self):
         super().__init__(
-            model=OPENAI_MODEL,
+            model=BEDROCK_MODEL,
             system_prompt=load_system_prompt("translator_prompt.md"),
             tools=[handoff_to_user]
         )
