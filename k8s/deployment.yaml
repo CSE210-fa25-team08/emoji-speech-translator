@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: emoji-translator
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: emoji-translator
+  template:
+    metadata:
+      labels:
+        app: emoji-translator
+    spec:
+      containers:
+        - name: emoji-translator
+          image: us-east1-docker.pkg.dev/gke-turns-10-469723/emoji-speech-translator/emoji-speech-translator:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8000
+          env:
+            - name: AWS_ACCESS_KEY_ID
+              valueFrom:
+                secretKeyRef:
+                  name: aws-secrets
+                  key: AWS_ACCESS_KEY_ID
+            - name: AWS_SECRET_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: aws-secrets
+                  key: AWS_SECRET_ACCESS_KEY
+            - name: AWS_SESSION_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: aws-secrets
+                  key: AWS_SESSION_TOKEN
+            - name: AWS_REGION
+              valueFrom:
+                secretKeyRef:
+                  name: aws-secrets
+                  key: AWS_REGION
