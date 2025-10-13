@@ -1,0 +1,33 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "emoji-speech-translator"
+version = "0.1.0"
+description = "A translator agent that converts GenZ emoji patterns to natural language"
+authors = [
+    {name = "Sai Krishna Chaparala", email = "cskrishna9306@gmail.com"}
+]
+readme = "README.md"
+requires-python = ">=3.8"
+dependencies = [
+    "strands-agents",
+    "strands-agents-tools",
+    "python-dotenv",
+    "fastapi",
+    "uvicorn"
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+    "black",
+    "flake8",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-dir]
+"" = "src"

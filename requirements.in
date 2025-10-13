@@ -1,0 +1,5 @@
+dotenv
+strands-agents[openai]
+strands-agents-tools
+fastapi
+uvicorn
