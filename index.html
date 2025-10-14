@@ -16,10 +16,10 @@
 
   <body>
     <main class="container">
-      <div class="content">
+      <article class="content">
         <!-- Header -->
         <header class="header">
-          <div class="title-container">
+          <figure class="title-container">
             <svg class="sparkle-icon sparkle-left" viewBox="0 0 24 24">
               <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
             </svg>
@@ -27,18 +27,18 @@
             <svg class="sparkle-icon sparkle-right" viewBox="0 0 24 24">
               <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
             </svg>
-          </div>
+          </figure>
           <p class="subtitle">Translate between emojis and words instantly</p>
         </header>
 
         <!-- Translator Grid -->
-        <div class="translator-grid">
+        <section class="translator-grid">
           <!-- Left Panel -->
           <section class="panel">
             <header class="panel-header">
               <span class="panel-label" id="leftLabel">📝 Words</span>
             </header>
-            <div class="textarea-container">
+            <fieldset class="textarea-container">
               <textarea 
                 id="leftText" 
                 placeholder="Type words here..." 
@@ -50,12 +50,12 @@
                   <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/>
                 </svg>
               </button>
-            </div>
-            <div class="char-count" id="leftCount">0 characters</div>
+            </fieldset>
+            <output class="char-count" id="leftCount">0 characters</output>
           </section>
 
           <!-- Swap Button -->
-          <div class="swap-container">
+          <nav class="swap-container">
             <button class="swap-btn" id="swapBtn" aria-label="Swap translation direction">
               <svg viewBox="0 0 24 24">
                 <path d="M8 3 4 7l4 4"/>
@@ -64,14 +64,14 @@
                 <path d="M20 17H4"/>
               </svg>
             </button>
-          </div>
+          </nav>
 
           <!-- Right Panel -->
           <section class="panel">
             <header class="panel-header">
               <span class="panel-label" id="rightLabel">😊 Emojis</span>
             </header>
-            <div class="textarea-container">
+            <fieldset class="textarea-container">
               <textarea 
                 id="rightText" 
                 placeholder="Translation appears here..." 
@@ -84,24 +84,24 @@
                   <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/>
                 </svg>
               </button>
-            </div>
-            <div class="char-count" id="rightCount">0 characters</div>
+            </fieldset>
+            <output class="char-count" id="rightCount">0 characters</output>
           </section>
-        </div>
+        </section>
 
         <!-- Footer -->
         <footer class="footer">
-          <div class="hint">
+          <figure class="hint">
             <svg viewBox="0 0 24 24">
               <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
             </svg>
-            <span>Try: "happy smile thumbs up" or "😊 👍 🎉"</span>
-          </div>
+            <figcaption>Try: "happy smile thumbs up" or "😊 👍 🎉"</figcaption>
+          </figure>
         </footer>
-      </div>
+      </article>
 
       <!-- Toast Notification -->
-      <div id="toast" class="toast hidden" role="status" aria-live="polite"></div>
+      <aside id="toast" class="toast hidden" role="status" aria-live="polite"></aside>
     </main>
 
     <script type="module" src="main.js"></script>
