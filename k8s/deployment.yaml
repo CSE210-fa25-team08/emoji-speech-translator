@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: emoji-translator
-          image: us-east1-docker.pkg.dev/gke-turns-10-469723/emoji-speech-translator/emoji-speech-translator:latest
+          image: us-west2-docker.pkg.dev/gke-turns-10-469723/emoji-translator-repo/emoji-speech-translator:latest
           imagePullPolicy: Always
           ports:
             - containerPort: 8000
