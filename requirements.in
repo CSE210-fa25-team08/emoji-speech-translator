@@ -3,3 +3,5 @@ strands-agents[openai]
 strands-agents-tools
 fastapi
 uvicorn
+pytest
+httpx

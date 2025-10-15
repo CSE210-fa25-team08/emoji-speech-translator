@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emoji Mapper Test Runner</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .test-container {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+        
+        .test-controls {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        
+        button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.3s;
+        }
+        
+        button:hover {
+            background: #5a6fd8;
+        }
+        
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+        
+        .test-output {
+            background: #1e1e1e;
+            color: #f8f8f2;
+            padding: 20px;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            line-height: 1.5;
+            max-height: 500px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+        }
+        
+        .test-summary {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+            padding: 15px;
+            margin-top: 20px;
+        }
+        
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            margin: 5px 0;
+            padding: 5px 0;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .summary-item:last-child {
+            border-bottom: none;
+            font-weight: bold;
+            font-size: 16px;
+        }
+        
+        .pass { color: #28a745; }
+        .fail { color: #dc3545; }
+        .total { color: #007bff; }
+        
+        .interactive-demo {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 20px 0;
+        }
+        
+        .demo-input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            margin: 10px 0;
+        }
+        
+        .demo-output {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+            padding: 10px;
+            margin: 10px 0;
+            min-height: 50px;
+        }
+        
+        .loading {
+            text-align: center;
+            color: #666;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🧪 Emoji Mapper Test Suite</h1>
+        <p>Comprehensive testing for emoji-to-word translation functionality</p>
+    </div>
+    
+    <div class="test-container">
+        <h2>Test Controls</h2>
+        <div class="test-controls">
+            <button id="runAllTests">Run All Tests</button>
+            <button id="runBasicTests">Run Basic Tests</button>
+            <button id="runPerformanceTests">Run Performance Tests</button>
+            <button id="clearOutput">Clear Output</button>
+        </div>
+        
+        <div class="interactive-demo">
+            <h3>🎮 Interactive Demo</h3>
+            <p>Try translating text to emojis and back:</p>
+            <input type="text" id="demoInput" class="demo-input" placeholder="Enter text to translate (e.g., 'I am happy')" value="I am happy and love pizza">
+            <button id="translateToEmoji">Text → Emoji</button>
+            <button id="translateToText">Emoji → Text</button>
+            <button id="bidirectionalTest">Bidirectional Test</button>
+            <div id="demoOutput" class="demo-output">Results will appear here...</div>
+        </div>
+        
+        <h3>Test Output</h3>
+        <div id="testOutput" class="test-output">Click "Run All Tests" to start testing...</div>
+        
+        <div id="testSummary" class="test-summary" style="display: none;">
+            <h4>Test Summary</h4>
+            <div id="summaryContent"></div>
+        </div>
+    </div>
+
+    <script type="module">
+        // Import the test functions
+        import { runAllTests } from './test_emoji_mapper.js';
+        import { emojiToWord, wordToEmoji, translateToEmojis, translateToWords } from './emojiMapper.js';
+        
+        // DOM elements
+        const testOutput = document.getElementById('testOutput');
+        const testSummary = document.getElementById('testSummary');
+        const summaryContent = document.getElementById('summaryContent');
+        const demoInput = document.getElementById('demoInput');
+        const demoOutput = document.getElementById('demoOutput');
+        
+        // Override console.log to capture test output
+        const originalLog = console.log;
+        let capturedOutput = '';
+        
+        console.log = function(...args) {
+            capturedOutput += args.join(' ') + '\n';
+            originalLog.apply(console, args);
+        };
+        
+        // Test runner functions
+        function runTests() {
+            capturedOutput = '';
+            testOutput.innerHTML = '<div class="loading">Running tests...</div>';
+            testSummary.style.display = 'none';
+            
+            setTimeout(() => {
+                try {
+                    const results = runAllTests();
+                    testOutput.textContent = capturedOutput;
+                    showSummary(results);
+                } catch (error) {
+                    testOutput.textContent = `Error running tests: ${error.message}`;
+                }
+            }, 100);
+        }
+        
+        function runBasicTests() {
+            capturedOutput = '';
+            testOutput.innerHTML = '<div class="loading">Running basic tests...</div>';
+            
+            setTimeout(() => {
+                try {
+                    // Test basic functionality
+                    console.log('🧪 Running Basic Tests...\n');
+                    
+                    // Test emojiToWord
+                    console.log('Testing emojiToWord mapping:');
+                    const testEmojis = ['😀', '❤️', '👍', '🔥', '🍕'];
+                    testEmojis.forEach(emoji => {
+                        const word = emojiToWord[emoji];
+                        console.log(`${emoji} → ${word}`);
+                    });
+                    
+                    // Test wordToEmoji
+                    console.log('\nTesting wordToEmoji mapping:');
+                    const testWords = ['grinning', 'red heart', 'thumbs up', 'fire', 'pizza'];
+                    testWords.forEach(word => {
+                        const emoji = wordToEmoji[word];
+                        console.log(`${word} → ${emoji}`);
+                    });
+                    
+                    // Test translation functions
+                    console.log('\nTesting translation functions:');
+                    const testText = 'I am happy and love pizza';
+                    const toEmoji = translateToEmojis(testText);
+                    const toText = translateToWords(toEmoji);
+                    console.log(`Original: ${testText}`);
+                    console.log(`To Emoji: ${toEmoji}`);
+                    console.log(`Back to Text: ${toText}`);
+                    
+                    testOutput.textContent = capturedOutput;
+                } catch (error) {
+                    testOutput.textContent = `Error running basic tests: ${error.message}`;
+                }
+            }, 100);
+        }
+        
+        function runPerformanceTests() {
+            capturedOutput = '';
+            testOutput.innerHTML = '<div class="loading">Running performance tests...</div>';
+            
+            setTimeout(() => {
+                try {
+                    console.log('🧪 Running Performance Tests...\n');
+                    
+                    const testText = 'happy sad angry fire water pizza coffee thumbs up party time';
+                    const iterations = 1000;
+                    
+                    console.log(`Testing with ${iterations} iterations...`);
+                    console.log(`Test text: "${testText}"`);
+                    
+                    const startTime = performance.now();
+                    
+                    for (let i = 0; i < iterations; i++) {
+                        translateToEmojis(testText);
+                        translateToWords(testText);
+                    }
+                    
+                    const endTime = performance.now();
+                    const duration = endTime - startTime;
+                    const avgTime = duration / iterations;
+                    
+                    console.log(`\nResults:`);
+                    console.log(`Total time: ${duration.toFixed(2)}ms`);
+                    console.log(`Average time per operation: ${avgTime.toFixed(2)}ms`);
+                    console.log(`Operations per second: ${(1000 / avgTime).toFixed(0)}`);
+                    
+                    const passed = avgTime < 10;
+                    console.log(`\nPerformance test: ${passed ? '✅ PASS' : '❌ FAIL'} (target: < 10ms per operation)`);
+                    
+                    testOutput.textContent = capturedOutput;
+                } catch (error) {
+                    testOutput.textContent = `Error running performance tests: ${error.message}`;
+                }
+            }, 100);
+        }
+        
+        function showSummary(results) {
+            testSummary.style.display = 'block';
+            const successRate = ((results.passed / results.total) * 100).toFixed(1);
+            
+            summaryContent.innerHTML = `
+                <div class="summary-item">
+                    <span>Tests Passed:</span>
+                    <span class="pass">${results.passed}</span>
+                </div>
+                <div class="summary-item">
+                    <span>Tests Failed:</span>
+                    <span class="fail">${results.failed}</span>
+                </div>
+                <div class="summary-item">
+                    <span>Total Tests:</span>
+                    <span class="total">${results.total}</span>
+                </div>
+                <div class="summary-item">
+                    <span>Success Rate:</span>
+                    <span class="${successRate >= 90 ? 'pass' : 'fail'}">${successRate}%</span>
+                </div>
+            `;
+        }
+        
+        function clearOutput() {
+            testOutput.textContent = 'Output cleared. Click "Run All Tests" to start testing...';
+            testSummary.style.display = 'none';
+            capturedOutput = '';
+        }
+        
+        // Demo functions
+        function translateToEmoji() {
+            const input = demoInput.value;
+            if (!input.trim()) {
+                demoOutput.textContent = 'Please enter some text to translate.';
+                return;
+            }
+            
+            try {
+                const result = translateToEmojis(input);
+                demoOutput.innerHTML = `
+                    <strong>Text → Emoji:</strong><br>
+                    <span style="font-size: 18px;">${result}</span>
+                `;
+            } catch (error) {
+                demoOutput.textContent = `Error: ${error.message}`;
+            }
+        }
+        
+        function translateToText() {
+            const input = demoInput.value;
+            if (!input.trim()) {
+                demoOutput.textContent = 'Please enter some text to translate.';
+                return;
+            }
+            
+            try {
+                const result = translateToWords(input);
+                demoOutput.innerHTML = `
+                    <strong>Emoji → Text:</strong><br>
+                    ${result}
+                `;
+            } catch (error) {
+                demoOutput.textContent = `Error: ${error.message}`;
+            }
+        }
+        
+        function bidirectionalTest() {
+            const input = demoInput.value;
+            if (!input.trim()) {
+                demoOutput.textContent = 'Please enter some text to translate.';
+                return;
+            }
+            
+            try {
+                const toEmoji = translateToEmojis(input);
+                const backToText = translateToWords(toEmoji);
+                
+                demoOutput.innerHTML = `
+                    <strong>Bidirectional Test:</strong><br>
+                    <strong>Original:</strong> ${input}<br>
+                    <strong>To Emoji:</strong> <span style="font-size: 18px;">${toEmoji}</span><br>
+                    <strong>Back to Text:</strong> ${backToText}<br>
+                    <strong>Match:</strong> ${input.toLowerCase().trim() === backToText.toLowerCase().trim() ? '✅ Yes' : '❌ No'}
+                `;
+            } catch (error) {
+                demoOutput.textContent = `Error: ${error.message}`;
+            }
+        }
+        
+        // Event listeners
+        document.getElementById('runAllTests').addEventListener('click', runTests);
+        document.getElementById('runBasicTests').addEventListener('click', runBasicTests);
+        document.getElementById('runPerformanceTests').addEventListener('click', runPerformanceTests);
+        document.getElementById('clearOutput').addEventListener('click', clearOutput);
+        document.getElementById('translateToEmoji').addEventListener('click', translateToEmoji);
+        document.getElementById('translateToText').addEventListener('click', translateToText);
+        document.getElementById('bidirectionalTest').addEventListener('click', bidirectionalTest);
+        
+        // Auto-run basic test on load
+        window.addEventListener('load', () => {
+            console.log('🚀 Emoji Mapper Test Suite loaded successfully!');
+            console.log('Click "Run All Tests" to start comprehensive testing.');
+        });
+    </script>
+</body>
+</html>
