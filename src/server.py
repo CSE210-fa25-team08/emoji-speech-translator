@@ -1,5 +1,6 @@
 from fastapi import FastAPI, Request, HTTPException
 from fastapi.responses import JSONResponse
+from fastapi.middleware.cors import CORSMiddleware
 
 # Import custom packages
 from src.translator import Translator
@@ -10,6 +11,21 @@ translator = Translator()
 
 # Instantiate the FastAPI app
 app = FastAPI()
+
+# Allow frontend origins (e.g., local dev and deployed site)
+origins = [
+    "http://127.0.0.1:5501",  # your local frontend
+    "http://localhost:5501",
+    "https://emoji-speech-translator.saichaparala.com",  # optional: production
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,          # or ["*"] to allow all
+    allow_credentials=True,
+    allow_methods=["*"],            # GET, POST, OPTIONS, etc.
+    allow_headers=["*"],            # Authorization, Content-Type, etc.
+)
 
 @app.get("/")
 async def root() -> JSONResponse:
@@ -93,63 +109,3 @@ async def translate(request: Request) -> JSONResponse:
         },
         status_code=200
     )
-    
-# @app.post("/emoji-to-speech")
-# async def emoji_to_speech(request: Request) -> JSONResponse:
-#     """
-#     Endpoint to perform emoji to natural language translation.
-
-#     Args:
-#         request: A request object containing the emoji pattern to translate
-        
-#     Returns:
-#         JSONResponse: The translation result
-#     """
-    
-#     # Extract the payload from the request body
-#     payload = await request.json()
-    
-#     # Invoke the translator agent with the emoji text
-#     translation = translator.structured_output(
-#         Translation,
-#         payload["text"]
-#     )
-    
-#     # Return the structured response
-#     return JSONResponse(
-#         content={
-#             "emoji": translation.emoji,
-#             "speech": translation.speech
-#         },
-#         status_code=200
-#     )
-
-# @app.post("/speech-to-emoji")
-# async def speech_to_emoji(request: Request) -> JSONResponse:
-#     """
-#     Endpoint to perform natural language to emoji translation.
-
-#     Args:
-#         request: A request object containing the text to translate to emojis
-        
-#     Returns:
-#         JSONResponse: The translation result
-#     """
-    
-#     # Extract the payload from the request body
-#     payload = await request.json()
-    
-#     # Invoke the translator agent with the text
-#     translation = translator.structured_output(
-#         Translation,
-#         payload["text"]
-#     )
-    
-#     # Return the structured response
-#     return JSONResponse(
-#         content={
-#             "emoji": translation.emoji,
-#             "speech": translation.speech
-#         },
-#         status_code=200
-#     )
