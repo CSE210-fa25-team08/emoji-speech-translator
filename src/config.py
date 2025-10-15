@@ -1,4 +1,3 @@
-import os
 from dotenv import load_dotenv
 from strands.models.openai import OpenAIModel
 from strands.models import BedrockModel
