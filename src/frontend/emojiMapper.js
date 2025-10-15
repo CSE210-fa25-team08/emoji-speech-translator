@@ -481,17 +481,34 @@ export const translateToEmojis = (text) => {
   if (!text.trim()) return '';
   
   const words = text.toLowerCase().split(/\s+/);
-  return words
-    .map(word => {
-      // Remove punctuation for matching
-      const cleanWord = word.replace(/[.,!?;:]$/, '');
-      const punctuation = word.match(/[.,!?;:]$/) || [''];
+  const result = [];
+  let i = 0;
+  
+  while (i < words.length) {
+    let matched = false;
+    
+    // Try to match phrases of decreasing length (3 words, 2 words, 1 word)
+    for (let phraseLength = Math.min(3, words.length - i); phraseLength >= 1; phraseLength--) {
+      const phrase = words.slice(i, i + phraseLength).join(' ');
+      const cleanPhrase = phrase.replace(/[.,!?;:]$/, '');
+      const punctuation = phrase.match(/[.,!?;:]$/) || [''];
       
-      return wordToEmoji[cleanWord] 
-        ? wordToEmoji[cleanWord] + punctuation[0]
-        : word;
-    })
-    .join(' ');
+      if (wordToEmoji[cleanPhrase]) {
+        result.push(wordToEmoji[cleanPhrase] + punctuation[0]);
+        i += phraseLength;
+        matched = true;
+        break;
+      }
+    }
+    
+    if (!matched) {
+      // No emoji found, keep original word
+      result.push(words[i]);
+      i++;
+    }
+  }
+  
+  return result.join(' ');
 };
 
 // Translate emojis to text
