@@ -1,4 +1,5 @@
 import { translateToEmojis, translateToWords } from './emojiMapper.js';
+import { translateWithApi } from './apiClient.js';
 
 // State
 let isEmojiToWords = false;
@@ -17,8 +18,8 @@ const swapBtn = document.getElementById('swapBtn');
 const translateBtn = document.getElementById('translateBtn');
 const toast = document.getElementById('toast');
 
-// Translation function
-function handleTranslate(text) {
+// Translation function (tries API first, then falls back)
+async function handleTranslate(text) {
   if (!text.trim()) {
     rightText.value = '';
     updateCharCount(rightText, rightCount);
@@ -26,12 +27,21 @@ function handleTranslate(text) {
     return;
   }
 
-  const translated = isEmojiToWords 
-    ? translateToWords(text)
-    : translateToEmojis(text);
-  
-  rightText.value = translated;
+  const mode = isEmojiToWords ? 'emoji-to-speech' : 'speech-to-emoji';
+
+  try {
+    const result = await translateWithApi(mode, text);
+    rightText.value = isEmojiToWords ? result.speech : result.emoji;
+  } catch (err) {
+    // Fallback to hardcoded mapping logic on error/timeout
+    const translated = isEmojiToWords 
+      ? translateToWords(text)
+      : translateToEmojis(text);
+    rightText.value = translated;
+  }
+
   updateCopyButton(rightText, rightCopy);
+  updateCharCount(rightText, rightCount);
 }
 
 // Swap function
@@ -152,7 +162,8 @@ leftText.addEventListener('input', (e) => {
 });
 
 translateBtn.addEventListener('click', () => {
-  handleTranslate(leftText.value);
+  // Fire and forget; UI updates when the promise resolves
+  void handleTranslate(leftText.value);
 });
 
 swapBtn.addEventListener('click', handleSwap);
