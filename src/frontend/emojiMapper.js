@@ -488,7 +488,7 @@ export const translateToEmojis = (text) => {
     let matched = false;
     
     // Try to match phrases of decreasing length (3 words, 2 words, 1 word)
-    for (let phraseLength = Math.min(3, words.length - i); phraseLength >= 1; phraseLength--) {
+    for (let phraseLength = Math.min(6, words.length - i); phraseLength >= 1; phraseLength--) {
       const phrase = words.slice(i, i + phraseLength).join(' ');
       const cleanPhrase = phrase.replace(/[.,!?;:]$/, '');
       const punctuation = phrase.match(/[.,!?;:]$/) || [''];
