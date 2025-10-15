@@ -100,11 +100,11 @@ function showToast(message) {
 // Update character count
 function updateCharCount(textarea, countElement) {
   const length = countCharacters(textarea.value);
-  const isOverLimit = length > MAX_CHARACTERS;
+  const isAtLimit = length >= MAX_CHARACTERS;
   countElement.textContent = `${length}/${MAX_CHARACTERS} character${length !== 1 ? 's' : ''}`;
   
   // Add visual feedback for character limit
-  if (isOverLimit) {
+  if (isAtLimit) {
     countElement.style.color = '#ef4444'; // red
   } else if (length > MAX_CHARACTERS * 0.9) {
     countElement.style.color = '#f59e0b'; // amber
