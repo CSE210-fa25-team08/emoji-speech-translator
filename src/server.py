@@ -3,8 +3,8 @@ from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 
 # Import custom packages
-from src.backend.translator import Translator
-from src.backend.Translation import Translation
+from src.translator import Translator
+from src.Translation import Translation
 
 # Instantiate the translator agent
 translator = Translator()
@@ -14,9 +14,10 @@ app = FastAPI()
 
 # Allow frontend origins (e.g., local dev and deployed site)
 origins = [
-    "http://127.0.0.1:5501",  # your local frontend
-    "http://localhost:5501",
-    "https://emoji-speech-translator.saichaparala.com",  # optional: production
+    # "http://127.0.0.1:5501",  # your local frontend
+    # "http://localhost:5501",
+    # "https://emoji-speech-translator.saichaparala.com",  # optional: production
+    "*"
 ]
 
 app.add_middleware(

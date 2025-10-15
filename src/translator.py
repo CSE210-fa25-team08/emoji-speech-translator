@@ -2,9 +2,9 @@ from strands import Agent
 from strands_tools import handoff_to_user
 
 # Import custom packages
-from src.backend.config import BEDROCK_MODEL
-from src.backend.utils import load_system_prompt
-from src.backend.Translation import Translation
+from src.config import BEDROCK_MODEL
+from src.utils import load_system_prompt
+from src.Translation import Translation
 
 class Translator(Agent):
     """
