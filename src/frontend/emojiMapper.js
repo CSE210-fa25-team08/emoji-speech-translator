@@ -494,6 +494,8 @@ export const translateToEmojis = (text) => {
     .join(' ');
 };
 
+LMAO
+
 // Translate emojis to text
 export const translateToWords = (text) => {
   if (!text.trim()) return '';
