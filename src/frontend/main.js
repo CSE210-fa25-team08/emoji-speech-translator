@@ -3,7 +3,7 @@ import { translateWithApi } from './apiClient.js';
 
 // State
 let isEmojiToWords = false;
-const MAX_CHARACTERS = 40;
+const MAX_CHARACTERS = 280;
 const AUTOTRANSLATE_TIMER = 4000;
 
 // DOM Elements
