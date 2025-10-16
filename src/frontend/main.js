@@ -5,6 +5,10 @@ import { translateWithApi } from './apiClient.js';
 let isEmojiToWords = false;
 const MAX_CHARACTERS = 40;
 const AUTOTRANSLATE_TIMER = 4000;
+const Positions = {
+  LEFT: 'left',
+  RIGHT: 'right'
+};
 
 // DOM Elements
 const leftText = document.getElementById('leftText');
@@ -14,10 +18,44 @@ const rightLabel = document.getElementById('rightLabel');
 const leftCopy = document.getElementById('leftCopy');
 const rightCopy = document.getElementById('rightCopy');
 const leftCount = document.getElementById('leftCount');
-const rightCount = document.getElementById('rightCount');
 const swapBtn = document.getElementById('swapBtn');
 const translateBtn = document.getElementById('translateBtn');
 const toast = document.getElementById('toast');
+
+
+function updateTextBox(position, clear) {
+  /** 
+   * Updates the specified text box's character count and visibility of the copy button.
+   * If clear is set to true, will clear the text value of the box
+   * :param: position: specifies which box should be updated
+   * :param: clear: boolean, whether the textbox's value should be cleared
+  */
+  if (position == Positions.RIGHT) {
+    if (clear) {
+      rightText.value = '';
+    }
+    if (rightText.value.trim()){
+      rightCopy.classList.remove('hidden');
+    }
+    else{
+      rightCopy.classList.add('hidden')
+    }
+  }
+  else if (position == Positions.LEFT) {
+    if (clear) {
+      leftText.value = '';
+    }
+    if (updateCharCount(leftText, leftCount) > 0){
+      leftCopy.classList.remove('hidden');
+    }
+    else{
+      leftCopy.classList.add('hidden')
+    }
+  }
+  else{
+    console.error("Tried to update text box in nonexistant postition: " + position)
+  }
+}
 
 let loadingTimer = null;
 let translateTimeoutId = 0;
@@ -54,10 +92,9 @@ async function handleTranslate(text) {
 
   lastTranslationRequest = text;
 
+  // When the input is only white space, we do not want to attempt to translate and default to an empty result
   if (!text.trim()) {
-    rightText.value = '';
-    updateCharCount(rightText, rightCount);
-    updateCopyButton(rightText, rightCopy);
+    updateTextBox(Positions.RIGHT, true)
     return;
   }
 
@@ -74,9 +111,9 @@ async function handleTranslate(text) {
       : translateToEmojis(text);
     rightText.value = translated;
   }
+
+  updateTextBox(Positions.RIGHT, false)
   stopLoading();
-  updateCopyButton(rightText, rightCopy);
-  updateCharCount(rightText, rightCount);
 }
 
 // Swap function
@@ -84,13 +121,8 @@ function handleSwap() {
   isEmojiToWords = !isEmojiToWords;
   lastTranslationRequest = ""; //clear the last request when we switch modes; don't ignore duplicates between modes
   
-  // Swap text and enforce character limit on the input side
-  const temp = leftText.value;
-  const rightValue = rightText.value;
-  
   // Truncate the text that will become the new input if it exceeds limit
-  leftText.value = truncateToLimit(rightValue);
-  rightText.value = ''; // Clear output when swapping
+  leftText.value = truncateToLimit(rightText.value);
   
   // Update labels
   if (isEmojiToWords) {
@@ -104,9 +136,8 @@ function handleSwap() {
   }
   
   // Update char counts and copy buttons
-  updateCharCount(leftText, leftCount);
-  updateCopyButton(leftText, leftCopy);
-  updateCopyButton(rightText, rightCopy);
+  updateTextBox(Positions.RIGHT, true) // Clear output when swapping
+  updateTextBox(Positions.LEFT, false)
 
   translateBtn.disabled = !leftText.value.trim();
 }
@@ -159,6 +190,7 @@ function triggerShake(target) {
 }
 
 // Update character count
+// Returns the number of characters
 function updateCharCount(textarea, countElement) {
   const length = countCharacters(textarea.value);
   const isAtLimit = length >= MAX_CHARACTERS;
@@ -172,15 +204,7 @@ function updateCharCount(textarea, countElement) {
   } else {
     countElement.style.color = ''; // default
   }
-}
-
-// Update copy button visibility
-function updateCopyButton(textarea, button) {
-  if (textarea.value.trim()) {
-    button.classList.remove('hidden');
-  } else {
-    button.classList.add('hidden');
-  }
+  return length;
 }
 
 // Count characters properly handling emojis as single characters
@@ -225,10 +249,8 @@ leftText.addEventListener('input', (e) => {
     showToast('Reached character limit');
   }
   
-  updateCopyButton(rightText, rightCopy);
-  
-  updateCharCount(leftText, leftCount);
-  updateCopyButton(leftText, leftCopy);
+  updateTextBox(Positions.RIGHT, false);
+  updateTextBox(Positions.LEFT, false)
 
   translateBtn.disabled = !inputValue.trim();
 });
