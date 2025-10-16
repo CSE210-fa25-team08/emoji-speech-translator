@@ -312,6 +312,8 @@ svg {
   transform: translateX(-50%) translateY(0);
 }
 
+.loading { opacity: 0.85; }
+
 /* Animations */
 @keyframes pulse {
   0%, 100% {
