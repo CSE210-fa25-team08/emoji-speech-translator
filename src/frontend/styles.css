@@ -275,6 +275,12 @@ svg {
   transform: scale(0.95);
 }
 
+.swap-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: scale(0.95);
+}
+
 /* Footer */
 .footer {
   margin-top: 2rem;
