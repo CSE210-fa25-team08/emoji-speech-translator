@@ -18,6 +18,31 @@ const swapBtn = document.getElementById('swapBtn');
 const translateBtn = document.getElementById('translateBtn');
 const toast = document.getElementById('toast');
 
+//newly added
+let loadingTimer = null;
+
+function startLoading() {
+  translateBtn.disabled = true;
+  rightText.classList.add('loading');
+  rightText.value = 'Translating';
+  let i = 0;
+  loadingTimer = setInterval(() => {
+    i = (i + 1) % 4; 
+    rightText.value = 'Translating' + '.'.repeat(i);
+  }, 350);
+}
+
+function stopLoading() {
+  translateBtn.disabled = false;
+  rightText.classList.remove('loading');
+  if (loadingTimer) {
+    clearInterval(loadingTimer);
+    loadingTimer = null;
+  }
+}
+
+
+
 // Translation function (tries API first, then falls back)
 async function handleTranslate(text) {
   if (!text.trim()) {
@@ -28,6 +53,7 @@ async function handleTranslate(text) {
   }
 
   const mode = isEmojiToWords ? 'emoji-to-speech' : 'speech-to-emoji';
+  startLoading();
 
   try {
     const result = await translateWithApi(mode, text);
@@ -39,7 +65,7 @@ async function handleTranslate(text) {
       : translateToEmojis(text);
     rightText.value = translated;
   }
-
+  stopLoading();
   updateCopyButton(rightText, rightCopy);
   updateCharCount(rightText, rightCount);
 }
