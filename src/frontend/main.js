@@ -4,6 +4,7 @@ import { translateWithApi } from './apiClient.js';
 // State
 let isEmojiToWords = false;
 const MAX_CHARACTERS = 40;
+const AUTOTRANSLATE_TIMER = 4000;
 
 // DOM Elements
 const leftText = document.getElementById('leftText');
@@ -19,6 +20,8 @@ const translateBtn = document.getElementById('translateBtn');
 const toast = document.getElementById('toast');
 
 let loadingTimer = null;
+let translateTimeoutId = 0;
+let lastTranslationRequest = "";
 
 function startLoading() {
   translateBtn.disabled = true;
@@ -42,6 +45,13 @@ function stopLoading() {
 
 // Translation function (tries API first, then falls back)
 async function handleTranslate(text) {
+  // if this translation request is a duplicate, do not translate
+  if (text.trim() == lastTranslationRequest.trim()){
+    return;
+  }
+
+  lastTranslationRequest = text;
+
   if (!text.trim()) {
     rightText.value = '';
     updateCharCount(rightText, rightCount);
@@ -70,6 +80,7 @@ async function handleTranslate(text) {
 // Swap function
 function handleSwap() {
   isEmojiToWords = !isEmojiToWords;
+  lastTranslationRequest = ""; //clear the last request when we switch modes; don't ignore duplicates between modes
   
   // Swap text and enforce character limit on the input side
   const temp = leftText.value;
@@ -192,6 +203,14 @@ function truncateToLimit(text) {
 // Event listeners
 leftText.addEventListener('input', (e) => {
   const inputValue = e.target.value;
+
+  // if the user stops typing for 4 seconds, attempt to translate
+  clearTimeout(translateTimeoutId); // clears the last scheduled translate
+  translateTimeoutId = setTimeout(() => {
+      console.log("Testing... this is the timeout");
+      void handleTranslate(leftText.value);
+    }, AUTOTRANSLATE_TIMER);
+  
   
   // Enforce character limit using emoji-aware counting
   if (countCharacters(inputValue) > MAX_CHARACTERS) {
@@ -204,8 +223,6 @@ leftText.addEventListener('input', (e) => {
     showToast('Reached character limit');
   }
   
-  // Clear output when input changes
-  rightText.value = '';
   updateCopyButton(rightText, rightCopy);
   
   updateCharCount(leftText, leftCount);
