@@ -84,16 +84,23 @@ async function handleCopy(text) {
 }
 
 // Show toast notification
+let toastTimeout = null;
 function showToast(message) {
   toast.textContent = message;
   toast.classList.remove('hidden');
   toast.classList.add('show');
   
-  setTimeout(() => {
+  if (toastTimeout) {
+    clearTimeout(toastTimeout);
+    toastTimeout = null;
+  }
+
+  toastTimeout = setTimeout(() => {
     toast.classList.remove('show');
     setTimeout(() => {
       toast.classList.add('hidden');
     }, 300);
+    toastTimeout = null;
   }, 2000);
 }
 
