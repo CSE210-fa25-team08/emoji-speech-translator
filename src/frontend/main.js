@@ -52,16 +52,15 @@ async function handleTranslate(text) {
   const mode = isEmojiToWords ? 'emoji-to-speech' : 'speech-to-emoji';
   startLoading();
 
-  try {
-    const result = await translateWithApi(mode, text);
-    rightText.value = isEmojiToWords ? result.speech : result.emoji;
-  } catch (err) {
+  // try {
+  //   const result = await translateWithApi(mode, text);
+  //   rightText.value = isEmojiToWords ? result.speech : result.emoji;
+  // } catch (err) {
     // Fallback to hardcoded mapping logic on error/timeout
-    const translated = isEmojiToWords 
-      ? translateToWords(text)
-      : translateToEmojis(text);
-    rightText.value = translated;
-  }
+  const translated = isEmojiToWords 
+    ? translateToWords(text)
+    : translateToEmojis(text);
+  rightText.value = translated;
   stopLoading();
   updateCopyButton(rightText, rightCopy);
   updateCharCount(rightText, rightCount);
