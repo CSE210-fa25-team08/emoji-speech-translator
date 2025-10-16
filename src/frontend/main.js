@@ -17,7 +17,6 @@ const rightLabel = document.getElementById('rightLabel');
 const leftCopy = document.getElementById('leftCopy');
 const rightCopy = document.getElementById('rightCopy');
 const leftCount = document.getElementById('leftCount');
-// const rightCount = document.getElementById('rightCount');
 const swapBtn = document.getElementById('swapBtn');
 const translateBtn = document.getElementById('translateBtn');
 const toast = document.getElementById('toast');
@@ -62,9 +61,6 @@ async function handleTranslate(text) {
   // When the input is only white space, we do not want to attempt to translate and default to an empty result
   if (!text.trim()) {
     updateTextBox(Positions.RIGHT, true)
-    // rightText.value = '';
-    // updateCharCount(rightText, rightCount);
-    // updateCopyButton(rightText, rightCopy);
     return;
   }
 
@@ -81,8 +77,6 @@ async function handleTranslate(text) {
     rightText.value = translated;
   }
 
-  // updateCopyButton(rightText, rightCopy);
-  // updateCharCount(rightText, rightCount);
   updateTextBox(Positions.RIGHT, false)
 }
 
@@ -92,7 +86,6 @@ function handleSwap() {
   
   // Truncate the text that will become the new input if it exceeds limit
   leftText.value = truncateToLimit(rightText.value);
-  // rightText.value = ''; // Clear output when swapping
   
   // Update labels
   if (isEmojiToWords) {
@@ -106,10 +99,7 @@ function handleSwap() {
   }
   
   // Update char counts and copy buttons
-  // updateCharCount(leftText, leftCount);
-  // updateCopyButton(leftText, leftCopy);
-  // updateCopyButton(rightText, rightCopy);
-  updateTextBox(Positions.RIGHT, true)
+  updateTextBox(Positions.RIGHT, true) // Clear output when swapping
   updateTextBox(Positions.LEFT, false)
 }
 
@@ -155,16 +145,6 @@ function updateCharCount(textarea, countElement) {
   return length;
 }
 
-// Update copy button visibility
-function updateCopyButton(textarea, button) {
-  // only allow copy when there is text that is not white space
-  if (textarea.value.trim()) {
-    button.classList.remove('hidden');
-  } else {
-    button.classList.add('hidden');
-  }
-}
-
 // Count characters properly handling emojis as single characters
 function countCharacters(text) {
   // Use Array.from to properly handle Unicode characters including emojis
@@ -197,11 +177,6 @@ leftText.addEventListener('input', (e) => {
   }
   
   // Clear output when input changes
-  // rightText.value = '';
-  // updateCopyButton(rightText, rightCopy);
-  
-  // updateCharCount(leftText, leftCount);
-  // updateCopyButton(leftText, leftCopy);
   updateTextBox(Positions.RIGHT, true);
   updateTextBox(Positions.LEFT, false)
 });
