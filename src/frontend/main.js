@@ -22,6 +22,7 @@ let loadingTimer = null;
 
 function startLoading() {
   translateBtn.disabled = true;
+  swapBtn.disabled = true;
   rightText.classList.add('loading');
   rightText.value = 'Translating';
   let i = 0;
@@ -33,6 +34,7 @@ function startLoading() {
 
 function stopLoading() {
   translateBtn.disabled = false;
+  swapBtn.disabled = false;
   rightText.classList.remove('loading');
   if (loadingTimer) {
     clearInterval(loadingTimer);
