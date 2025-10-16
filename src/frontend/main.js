@@ -18,7 +18,6 @@ const swapBtn = document.getElementById('swapBtn');
 const translateBtn = document.getElementById('translateBtn');
 const toast = document.getElementById('toast');
 
-//newly added
 let loadingTimer = null;
 
 function startLoading() {
@@ -40,8 +39,6 @@ function stopLoading() {
     loadingTimer = null;
   }
 }
-
-
 
 // Translation function (tries API first, then falls back)
 async function handleTranslate(text) {
