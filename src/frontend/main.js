@@ -56,6 +56,28 @@ function updateTextBox(position, clear) {
   }
 }
 
+let loadingTimer = null;
+
+function startLoading() {
+  translateBtn.disabled = true;
+  rightText.classList.add('loading');
+  rightText.value = 'Translating';
+  let i = 0;
+  loadingTimer = setInterval(() => {
+    i = (i + 1) % 4; 
+    rightText.value = 'Translating' + '.'.repeat(i);
+  }, 350);
+}
+
+function stopLoading() {
+  translateBtn.disabled = false;
+  rightText.classList.remove('loading');
+  if (loadingTimer) {
+    clearInterval(loadingTimer);
+    loadingTimer = null;
+  }
+}
+
 // Translation function (tries API first, then falls back)
 async function handleTranslate(text) {
   // When the input is only white space, we do not want to attempt to translate and default to an empty result
@@ -65,6 +87,7 @@ async function handleTranslate(text) {
   }
 
   const mode = isEmojiToWords ? 'emoji-to-speech' : 'speech-to-emoji';
+  startLoading();
 
   try {
     const result = await translateWithApi(mode, text);
@@ -78,6 +101,7 @@ async function handleTranslate(text) {
   }
 
   updateTextBox(Positions.RIGHT, false)
+  stopLoading();
 }
 
 // Swap function
