@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # Emoji-Speech Translator
 
 **A web-app for translating emojis to natural language and vice-versa**
@@ -168,9 +167,3 @@ Ensure that:
 
 This project is licensed under the [MIT License](./LICENSE).
 
-=======
-# emoji-speech-translator
-A web-app for translating emojis to natural language and vice-versa
-
-Project presentation: https://docs.google.com/presentation/d/1JKRCoz0rSFpW3YS-DFMbbVD1PE_xP3oeBdIiqj2dxwA/edit?usp=sharing
->>>>>>> ee634aff1a0e2ab6135198974d102db0826e05c5
