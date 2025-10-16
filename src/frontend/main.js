@@ -89,7 +89,7 @@ function showToast(message) {
   toast.textContent = message;
   toast.classList.remove('hidden');
   toast.classList.add('show');
-  
+
   if (toastTimeout) {
     clearTimeout(toastTimeout);
     toastTimeout = null;
@@ -102,6 +102,22 @@ function showToast(message) {
     }, 300);
     toastTimeout = null;
   }, 2000);
+}
+
+// Apply a brief shake animation
+let lastShake = 0;
+function triggerShake(target) {
+  // Respect user preference for reduced motion
+  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (prefersReduced) return;
+
+  const now = Date.now();
+  // Avoid continuous shaking
+  if (now - lastShake < 600) return;
+  lastShake = now;
+
+  target.classList.add('shake');
+  setTimeout(() => target.classList.remove('shake'), 500);
 }
 
 // Update character count
@@ -158,6 +174,9 @@ leftText.addEventListener('input', (e) => {
     // Move cursor to end after truncation
     const truncatedLength = e.target.value.length;
     e.target.setSelectionRange(truncatedLength, truncatedLength);
+    // Visual signals
+    triggerShake(e.target);
+    showToast('Reached character limit');
   }
   
   // Clear output when input changes
