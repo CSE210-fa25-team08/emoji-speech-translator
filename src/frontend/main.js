@@ -4,6 +4,7 @@ import { translateWithApi } from './apiClient.js';
 // State
 let isEmojiToWords = false;
 const MAX_CHARACTERS = 40;
+const AUTOTRANSLATE_TIMER = 4000;
 
 // DOM Elements
 const leftText = document.getElementById('leftText');
@@ -206,7 +207,7 @@ leftText.addEventListener('input', (e) => {
   translateTimeoutId = setTimeout(() => {
       console.log("Testing... this is the timeout");
       void handleTranslate(leftText.value);
-    }, 4000);
+    }, AUTOTRANSLATE_TIMER);
   
   
   // Enforce character limit using emoji-aware counting
