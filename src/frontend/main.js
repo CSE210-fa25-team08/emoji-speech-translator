@@ -182,6 +182,8 @@ leftText.addEventListener('input', (e) => {
   
   updateCharCount(leftText, leftCount);
   updateCopyButton(leftText, leftCopy);
+
+  translateBtn.disabled = !inputValue.trim();
 });
 
 translateBtn.addEventListener('click', () => {
@@ -201,3 +203,4 @@ rightCopy.addEventListener('click', () => {
 
 // Initialize
 updateCharCount(leftText, leftCount);
+translateBtn.disabled = true;
