@@ -94,6 +94,8 @@ function handleSwap() {
   updateCharCount(leftText, leftCount);
   updateCopyButton(leftText, leftCopy);
   updateCopyButton(rightText, rightCopy);
+
+  translateBtn.disabled = !leftText.value.trim();
 }
 
 // Copy to clipboard
