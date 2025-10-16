@@ -4,6 +4,7 @@ import { translateWithApi } from './apiClient.js';
 // State
 let isEmojiToWords = false;
 const MAX_CHARACTERS = 40;
+const AUTOTRANSLATE_TIMER = 4000;
 const Positions = {
   LEFT: 'left',
   RIGHT: 'right'
@@ -57,6 +58,8 @@ function updateTextBox(position, clear) {
 }
 
 let loadingTimer = null;
+let translateTimeoutId = 0;
+let lastTranslationRequest = "";
 
 function startLoading() {
   translateBtn.disabled = true;
@@ -80,6 +83,13 @@ function stopLoading() {
 
 // Translation function (tries API first, then falls back)
 async function handleTranslate(text) {
+  // if this translation request is a duplicate, do not translate
+  if (text.trim() == lastTranslationRequest.trim()){
+    return;
+  }
+
+  lastTranslationRequest = text;
+
   // When the input is only white space, we do not want to attempt to translate and default to an empty result
   if (!text.trim()) {
     updateTextBox(Positions.RIGHT, true)
@@ -107,6 +117,7 @@ async function handleTranslate(text) {
 // Swap function
 function handleSwap() {
   isEmojiToWords = !isEmojiToWords;
+  lastTranslationRequest = ""; //clear the last request when we switch modes; don't ignore duplicates between modes
   
   // Truncate the text that will become the new input if it exceeds limit
   leftText.value = truncateToLimit(rightText.value);
@@ -125,6 +136,8 @@ function handleSwap() {
   // Update char counts and copy buttons
   updateTextBox(Positions.RIGHT, true) // Clear output when swapping
   updateTextBox(Positions.LEFT, false)
+
+  translateBtn.disabled = !leftText.value.trim();
 }
 
 // Copy to clipboard
@@ -138,17 +151,40 @@ async function handleCopy(text) {
 }
 
 // Show toast notification
+let toastTimeout = null;
 function showToast(message) {
   toast.textContent = message;
   toast.classList.remove('hidden');
   toast.classList.add('show');
-  
-  setTimeout(() => {
+
+  if (toastTimeout) {
+    clearTimeout(toastTimeout);
+    toastTimeout = null;
+  }
+
+  toastTimeout = setTimeout(() => {
     toast.classList.remove('show');
     setTimeout(() => {
       toast.classList.add('hidden');
     }, 300);
+    toastTimeout = null;
   }, 2000);
+}
+
+// Apply a brief shake animation
+let lastShake = 0;
+function triggerShake(target) {
+  // Respect user preference for reduced motion
+  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (prefersReduced) return;
+
+  const now = Date.now();
+  // Avoid continuous shaking
+  if (now - lastShake < 600) return;
+  lastShake = now;
+
+  target.classList.add('shake');
+  setTimeout(() => target.classList.remove('shake'), 500);
 }
 
 // Update character count
@@ -191,6 +227,14 @@ function truncateToLimit(text) {
 // Event listeners
 leftText.addEventListener('input', (e) => {
   const inputValue = e.target.value;
+
+  // if the user stops typing for 4 seconds, attempt to translate
+  clearTimeout(translateTimeoutId); // clears the last scheduled translate
+  translateTimeoutId = setTimeout(() => {
+      console.log("Testing... this is the timeout");
+      void handleTranslate(leftText.value);
+    }, AUTOTRANSLATE_TIMER);
+  
   
   // Enforce character limit using emoji-aware counting
   if (countCharacters(inputValue) > MAX_CHARACTERS) {
@@ -198,11 +242,15 @@ leftText.addEventListener('input', (e) => {
     // Move cursor to end after truncation
     const truncatedLength = e.target.value.length;
     e.target.setSelectionRange(truncatedLength, truncatedLength);
+    // Visual signals
+    triggerShake(e.target);
+    showToast('Reached character limit');
   }
   
-  // Clear output when input changes
-  updateTextBox(Positions.RIGHT, true);
+  updateTextBox(Positions.RIGHT, false);
   updateTextBox(Positions.LEFT, false)
+
+  translateBtn.disabled = !inputValue.trim();
 });
 
 translateBtn.addEventListener('click', () => {
@@ -222,3 +270,4 @@ rightCopy.addEventListener('click', () => {
 
 // Initialize
 updateCharCount(leftText, leftCount);
+translateBtn.disabled = true;
