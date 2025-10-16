@@ -106,10 +106,10 @@ async function handleTranslate(text) {
     rightText.value = isEmojiToWords ? result.speech : result.emoji;
   } catch (err) {
     // Fallback to hardcoded mapping logic on error/timeout
-    const translated = isEmojiToWords 
-      ? translateToWords(text)
-      : translateToEmojis(text);
-    rightText.value = translated;
+  const translated = isEmojiToWords 
+    ? translateToWords(text)
+    : translateToEmojis(text);
+  rightText.value = translated;
   }
 
   updateTextBox(Positions.RIGHT, false)

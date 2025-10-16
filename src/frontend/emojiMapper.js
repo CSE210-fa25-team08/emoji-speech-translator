@@ -465,6 +465,207 @@ export const emojiToWord = {
   '🧃': 'juice box',
   '🧉': 'mate',
   '🧊': 'ice',
+
+  '🫠': 'melting face',
+  '🫡': 'saluting face',
+  '🫢': 'gasping face',
+  '🫣': 'peeking face',
+  '🫤': 'face with diagonal mouth',
+  '🫥': 'dotted line face',
+  '🫨': 'shaking face',
+  '🥹': 'holding back tears',
+  '🫶': 'heart hands',
+  '🫰': 'money gesture',
+  '🫷': 'left pushing hand',
+  '🫸': 'right pushing hand',
+  '🫳': 'palm down hand',
+  '🫴': 'palm up hand',
+  '🫱': 'rightward hand',
+  '🫲': 'leftward hand',
+
+  // New hearts
+  '🩷': 'pink heart',
+  '🩵': 'light blue heart',
+  '🩶': 'gray heart',
+
+  // Animals and nature
+  '🦭': 'seal',
+  '🪿': 'goose',
+  '🦤': 'dodo',
+  '🦫': 'beaver',
+  '🦭': 'seal',
+  '🦦': 'otter',
+  '🦨': 'skunk',
+  '🦩': 'flamingo',
+  '🦮': 'guide dog',
+  '🐕‍🦺': 'service dog',
+  '🐈‍⬛': 'black cat',
+  '🪿': 'goose',
+  '🪱': 'worm',
+  '🪰': 'fly',
+  '🪳': 'cockroach',
+  '🪲': 'beetle',
+  '🪶': 'feather',
+  '🪸': 'coral',
+  '🪷': 'lotus',
+  '🪻': 'hyacinth',
+  '🪴': 'potted plant',
+
+  // Food and drink (newer)
+  '🫛': 'pea pod',
+  '🫘': 'beans',
+  '🫕': 'fondue',
+  '🫓': 'flatbread',
+  '🧆': 'falafel',
+  '🫔': 'tamale',
+  '🧄': 'garlic',
+  '🧅': 'onion',
+  '🫐': 'blueberries',
+  '🫒': 'olive',
+  '🫚': 'ginger',
+  '🫛': 'peas',
+  '🧇': 'waffle',
+  '🧋': 'bubble tea',
+  '🫗': 'pouring liquid',
+  '🧃': 'juice box',
+  '🧉': 'mate drink',
+  '🧊': 'ice cube',
+
+  // Gestures and body
+  '🦰': 'red hair',
+  '🦱': 'curly hair',
+  '🦳': 'white hair',
+  '🦲': 'bald',
+  '🫦': 'biting lip',
+  '🩸': 'blood drop',
+  '🩹': 'adhesive bandage',
+  '🩼': 'crutch',
+  '🦽': 'manual wheelchair',
+  '🦼': 'motorized wheelchair',
+  '🩻': 'x-ray',
+
+  // Clothing & accessories
+  '🧢': 'cap',
+  '🪖': 'military helmet',
+  '🧣': 'scarf',
+  '🧤': 'gloves',
+  '🧥': 'coat',
+  '🧦': 'socks',
+  '🥾': 'hiking boot',
+  '🥿': 'flat shoe',
+  '👗': 'dress',
+  '👕': 'tshirt',
+  '🩲': 'briefs',
+  '🩳': 'shorts',
+  '🩴': 'flip flops',
+  '🪮': 'comb',
+  '🪭': 'folding fan',
+  '🕶️': 'sunglasses',
+
+  // Travel and places
+  '🛻': 'pickup truck',
+  '🚛': 'truck',
+  '🛞': 'wheel',
+  '🛺': 'auto rickshaw',
+  '🛩️': 'small airplane',
+  '🪂': 'parachute',
+  '🛸': 'flying saucer',
+  '🚀': 'rocket',
+  '🛰️': 'satellite',
+  '🛸': 'ufo',
+  '🪐': 'planet',
+  '🌌': 'milky way',
+  '🪨': 'rock',
+  '🪵': 'wood',
+  '🛖': 'hut',
+  '🛕': 'hindu temple',
+  '🕌': 'mosque',
+  '🕋': 'kaaba',
+  '🪣': 'bucket',
+  '🪠': 'plunger',
+
+  // Objects
+  '🪩': 'mirror ball',
+  '🪞': 'mirror',
+  '🪟': 'window',
+  '🪑': 'chair',
+  '🛋️': 'sofa',
+  '🛏️': 'bed',
+  '🪤': 'mouse trap',
+  '🪒': 'razor',
+  '🪡': 'needle',
+  '🪢': 'knot',
+  '🪫': 'low battery',
+  '🪩': 'disco ball',
+  '🪪': 'id card',
+  '🪫': 'low battery',
+  '🪤': 'mouse trap',
+  '🧯': 'fire extinguisher',
+  '🧰': 'toolbox',
+  '🪓': 'axe',
+
+  // Technology and media
+  '🖲️': 'trackball',
+  '🧭': 'compass',
+  '🕰️': 'mantel clock',
+  '🪫': 'low battery',
+  '🪩': 'mirror ball',
+  '📸': 'camera flash',
+  '📹': 'video camera',
+  '🧮': 'abacus',
+  '🧾': 'receipt',
+  '🪙': 'coin',
+  '🪟': 'window',
+  '🪣': 'bucket',
+
+  // Symbols and weather
+  '🌀': 'cyclone',
+  '🌪️': 'tornado',
+  '🌫️': 'fog',
+  '🫧': 'bubbles',
+  '🌡️': 'thermometer',
+  '🌦️': 'sun behind rain cloud',
+  '🌨️': 'snow cloud',
+  '🌩️': 'lightning cloud',
+  '🌈': 'rainbow',
+  '🪹': 'empty nest',
+  '🪺': 'nest',
+  
+  // Miscellaneous
+  '🪵': 'wood',
+  '🪶': 'feather',
+  '🪿': 'goose',
+  '🪼': 'jellyfish',
+  '🪻': 'hyacinth',
+  '🪺': 'nest with eggs',
+  '🪹': 'empty nest',
+  '🪨': 'rock',
+  '🪵': 'log',
+  '🪄': 'magic wand',
+  '🪆': 'nesting dolls',
+  '🪅': 'piñata',
+  '🪭': 'folding fan',
+  '🪮': 'comb',
+  '🪯': 'khanda',
+
+  // Hand-based gestures 
+  '🫱🏽': 'rightward hand',
+  '🫲🏿': 'leftward hand',
+  '🫶🏻': 'heart hands',
+
+  // Flags 
+  '🏳️': 'white flag',
+  '🏴': 'black flag',
+  '🏳️‍🌈': 'rainbow flag',
+  '🏳️‍⚧️': 'transgender flag',
+  '🇮🇳': 'india flag',
+  '🇺🇸': 'usa flag',
+  '🇫🇷': 'france flag',
+  '🇯🇵': 'japan flag',
+  '🇨🇦': 'canada flag',
+  '🇩🇪': 'germany flag',
+  '🇬🇧': 'uk flag',
+
 };
 
 // Create reverse mapping (word to emoji)
@@ -476,38 +677,120 @@ export const wordToEmoji = Object.entries(emojiToWord).reduce(
   {}
 );
 
-// Translate text to emojis
+
+
+
+function levenshtein(a, b) {
+  const dp = Array.from({ length: a.length + 1 }, () => Array(b.length + 1).fill(0));
+
+  for (let i = 0; i <= a.length; i++) dp[i][0] = i;
+  for (let j = 0; j <= b.length; j++) dp[0][j] = j;
+
+  for (let i = 1; i <= a.length; i++) {
+    for (let j = 1; j <= b.length; j++) {
+      const cost = a[i - 1] === b[j - 1] ? 0 : 1;
+      dp[i][j] = Math.min(
+        dp[i - 1][j] + 1,      // deletion
+        dp[i][j - 1] + 1,      // insertion
+        dp[i - 1][j - 1] + cost // substitution
+      );
+    }
+  }
+
+  return dp[a.length][b.length];
+}
+
+function findSubsetEmoji(phrase) {
+  let bestMatchEmoji = null;
+  let shortestKeyLength = Infinity;
+
+  for (const [key, emoji] of Object.entries(wordToEmoji)) {
+    // Find keys that contain the phrase but are not the phrase itself
+    if (new RegExp(`\\b${phrase}\\b`, 'i').test(key) && key !== phrase) {
+      // Prefer the shortest matching key to be more specific
+      // e.g., if "heart" is the phrase, prefer "red heart" over "anatomical heart"
+      if (key.length < shortestKeyLength) {
+        shortestKeyLength = key.length;
+        bestMatchEmoji = emoji;
+      }
+    }
+  }
+
+  return bestMatchEmoji;
+}
+
+// --- NEW: Helper to find the best fuzzy match for a phrase ---
+function findClosestEmoji(phrase, maxDistance = 2) {
+  let closestEmoji = null;
+  let minDistance = Infinity;
+
+  // Iterate over all possible words in the dictionary
+  for (const [word, emoji] of Object.entries(wordToEmoji)) {
+    const distance = levenshtein(phrase, word);
+    // If this word is closer than the best one we've found so far
+    if (distance < minDistance && distance <= maxDistance) {
+      minDistance = distance;
+      closestEmoji = emoji;
+    }
+  }
+
+  return closestEmoji;
+}
+
+// --- MODIFIED: Main translation function with fuzzy matching ---
 export const translateToEmojis = (text) => {
   if (!text.trim()) return '';
-  
+
   const words = text.toLowerCase().split(/\s+/);
   const result = [];
   let i = 0;
-  
+
   while (i < words.length) {
     let matched = false;
-    
-    // Try to match phrases of decreasing length (3 words, 2 words, 1 word)
+
+    // Try to match the longest possible phrase first
     for (let phraseLength = Math.min(6, words.length - i); phraseLength >= 1; phraseLength--) {
       const phrase = words.slice(i, i + phraseLength).join(' ');
       const cleanPhrase = phrase.replace(/[.,!?;:]$/, '');
       const punctuation = phrase.match(/[.,!?;:]$/) || [''];
-      
+
+      // --- New Matching Order ---
+      // 1. Try for an exact match first.
       if (wordToEmoji[cleanPhrase]) {
         result.push(wordToEmoji[cleanPhrase] + punctuation[0]);
         i += phraseLength;
         matched = true;
         break;
+      } else {
+        // If no exact match, try other strategies for this phrase length
+        // 2. Try for a subset match.
+        const subsetMatch = findSubsetEmoji(cleanPhrase);
+        if (subsetMatch) {
+            result.push(subsetMatch + punctuation[0]);
+            i += phraseLength;
+            matched = true;
+            break;
+        } else {
+            // 3. Finally, try for a fuzzy match.
+            const fuzzyMatch = findClosestEmoji(cleanPhrase);
+            if (fuzzyMatch) {
+                result.push(fuzzyMatch + punctuation[0]);
+                i += phraseLength;
+                matched = true;
+                break;
+            }
+        }
       }
     }
-    
+
+    // If no match of any kind was found for any phrase length starting at `i`,
+    // just add the original word and advance by one.
     if (!matched) {
-      // No emoji found, keep original word
       result.push(words[i]);
       i++;
     }
   }
-  
+
   return result.join(' ');
 };
 
