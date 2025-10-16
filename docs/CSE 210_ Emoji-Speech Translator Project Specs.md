@@ -32,7 +32,9 @@ It leverages **Large Language Models (LLMs)** to perform contextual translations
 
 The request-response lifecycle is illustrated below:
 
-(I think it will be better if we provide some screenshots)
+![User Flow Diagram](user-flow-diagram.png)
+
+![Sytem Flow Diagram](system-flow-diagram.png)
 
 1. **User Input:** The user enters either emojis or plain text and selects the desired translation direction.  
 2. **Frontend Request:** 
