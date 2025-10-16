@@ -4,6 +4,10 @@ import { translateWithApi } from './apiClient.js';
 // State
 let isEmojiToWords = false;
 const MAX_CHARACTERS = 40;
+const Positions = {
+  LEFT: 'left',
+  RIGHT: 'right'
+};
 
 // DOM Elements
 const leftText = document.getElementById('leftText');
@@ -13,17 +17,54 @@ const rightLabel = document.getElementById('rightLabel');
 const leftCopy = document.getElementById('leftCopy');
 const rightCopy = document.getElementById('rightCopy');
 const leftCount = document.getElementById('leftCount');
-const rightCount = document.getElementById('rightCount');
+// const rightCount = document.getElementById('rightCount');
 const swapBtn = document.getElementById('swapBtn');
 const translateBtn = document.getElementById('translateBtn');
 const toast = document.getElementById('toast');
 
+
+function updateTextBox(position, clear) {
+  /** 
+   * Updates the specified text box's character count and visibility of the copy button.
+   * If clear is set to true, will clear the text value of the box
+   * :param: position: specifies which box should be updated
+   * :param: clear: boolean, whether the textbox's value should be cleared
+  */
+  if (position == Positions.RIGHT) {
+    if (clear) {
+      rightText.value = '';
+    }
+    if (rightText.value.trim()){
+      rightCopy.classList.remove('hidden');
+    }
+    else{
+      rightCopy.classList.add('hidden')
+    }
+  }
+  else if (position == Positions.LEFT) {
+    if (clear) {
+      leftText.value = '';
+    }
+    if (updateCharCount(leftText, leftCount) > 0){
+      leftCopy.classList.remove('hidden');
+    }
+    else{
+      leftCopy.classList.add('hidden')
+    }
+  }
+  else{
+    console.error("Tried to update text box in nonexistant postition: " + position)
+  }
+}
+
 // Translation function (tries API first, then falls back)
 async function handleTranslate(text) {
+  // When the input is only white space, we do not want to attempt to translate and default to an empty result
   if (!text.trim()) {
-    rightText.value = '';
-    updateCharCount(rightText, rightCount);
-    updateCopyButton(rightText, rightCopy);
+    updateTextBox(Positions.RIGHT, true)
+    // rightText.value = '';
+    // updateCharCount(rightText, rightCount);
+    // updateCopyButton(rightText, rightCopy);
     return;
   }
 
@@ -40,21 +81,18 @@ async function handleTranslate(text) {
     rightText.value = translated;
   }
 
-  updateCopyButton(rightText, rightCopy);
-  updateCharCount(rightText, rightCount);
+  // updateCopyButton(rightText, rightCopy);
+  // updateCharCount(rightText, rightCount);
+  updateTextBox(Positions.RIGHT, false)
 }
 
 // Swap function
 function handleSwap() {
   isEmojiToWords = !isEmojiToWords;
   
-  // Swap text and enforce character limit on the input side
-  const temp = leftText.value;
-  const rightValue = rightText.value;
-  
   // Truncate the text that will become the new input if it exceeds limit
-  leftText.value = truncateToLimit(rightValue);
-  rightText.value = ''; // Clear output when swapping
+  leftText.value = truncateToLimit(rightText.value);
+  // rightText.value = ''; // Clear output when swapping
   
   // Update labels
   if (isEmojiToWords) {
@@ -68,9 +106,11 @@ function handleSwap() {
   }
   
   // Update char counts and copy buttons
-  updateCharCount(leftText, leftCount);
-  updateCopyButton(leftText, leftCopy);
-  updateCopyButton(rightText, rightCopy);
+  // updateCharCount(leftText, leftCount);
+  // updateCopyButton(leftText, leftCopy);
+  // updateCopyButton(rightText, rightCopy);
+  updateTextBox(Positions.RIGHT, true)
+  updateTextBox(Positions.LEFT, false)
 }
 
 // Copy to clipboard
@@ -98,6 +138,7 @@ function showToast(message) {
 }
 
 // Update character count
+// Returns the number of characters
 function updateCharCount(textarea, countElement) {
   const length = countCharacters(textarea.value);
   const isAtLimit = length >= MAX_CHARACTERS;
@@ -111,10 +152,12 @@ function updateCharCount(textarea, countElement) {
   } else {
     countElement.style.color = ''; // default
   }
+  return length;
 }
 
 // Update copy button visibility
 function updateCopyButton(textarea, button) {
+  // only allow copy when there is text that is not white space
   if (textarea.value.trim()) {
     button.classList.remove('hidden');
   } else {
@@ -154,11 +197,13 @@ leftText.addEventListener('input', (e) => {
   }
   
   // Clear output when input changes
-  rightText.value = '';
-  updateCopyButton(rightText, rightCopy);
+  // rightText.value = '';
+  // updateCopyButton(rightText, rightCopy);
   
-  updateCharCount(leftText, leftCount);
-  updateCopyButton(leftText, leftCopy);
+  // updateCharCount(leftText, leftCount);
+  // updateCopyButton(leftText, leftCopy);
+  updateTextBox(Positions.RIGHT, true);
+  updateTextBox(Positions.LEFT, false)
 });
 
 translateBtn.addEventListener('click', () => {
